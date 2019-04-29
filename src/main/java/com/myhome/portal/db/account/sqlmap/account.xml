@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace="account">
+ 	<select id="selectAccount" parameterType="incaseMap" resultType="hashmap">
+ 		select
+ 			*
+ 		from t_account
+ 		where 1=1
+ 		
+	</select>
+ 
+     <select id="getDsv" parameterType="string" resultType="dsvVo" >
+        SELECT *  
+               from 
+        LSC_DSV 
+            where
+                1 = 1
+                <if test="_parameter  != null and _parameter.isEmpty() == false">
+                and CREATE_USER = #{userId} 
+                </if>
+                order by CREATE_DATE desc  
+                LIMIT  1
+     </select>
+     <delete id="deleteDsvAll" parameterType="string">
+        DELETE  
+            from 
+        LSC_DSV 
+            where
+                1 = 1
+                and CREATE_USER = #{userId} 
+     </delete>
+     <update id="saveDsv" parameterType="dsvVo" >
+        insert into LSC_DSV   
+         ( 
+	         DATA, 
+	         CREATE_USER, LASTUPDATE_USER ,  
+	         CREATE_DATE , LAST_UPDATE 
+         )
+         values 
+         (
+            #{data}, #{createUser}, #{lastupdateUser}, #{createDate}, #{lastUpdate}              
+         )                    
+     </update>
+     <update id="updateLastGroupDeviceUpdatedTime" parameterType="string" >
+         update 
+            LSC_DSV_GROUP_DEVICE_TIME   
+            set 
+                LAST_UPDATE = #{lastUpdate}           
+     </update>
+    <select id="selectLastGroupDeviceUpdatedTime" resultType="string" >
+         select LAST_UPDATE from LSC_DSV_GROUP_DEVICE_TIME limit 1                   
+    </select>
+	<insert id="insertDsvSelectedByUserId"  parameterType="incaseMap"> 
+	    insert into LSC_DSV
+		(
+			DATA
+			, CREATE_USER
+			, LASTUPDATE_USER
+			, CREATE_DATE
+			, LAST_UPDATE
+		)
+		select 
+			DATA
+			, #{destinyUserId} as CREATE_USER
+			, #{destinyUserId} as LASTUPDATE_USER
+			, #{modDate} as CREATE_DATE
+			, #{modDate} as LAST_UPDATE
+		from  LSC_DSV
+		where 1=1
+			and CREATE_USER = #{targetUserId} 
+		limit 1
+	</insert>
+ </mapper>
+ 

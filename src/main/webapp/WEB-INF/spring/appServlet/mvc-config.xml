@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:mvc="http://www.springframework.org/schema/mvc"
+xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:context="http://www.springframework.org/schema/context"
+xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+                    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd     
+                    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+                   
+   	<mvc:interceptors>
+		<mvc:interceptor>
+        	<mvc:mapping path="/account*" />
+           	<mvc:mapping path="/log*" />
+           	<mvc:mapping path="/dsv*" />
+           	<mvc:mapping path="/dash*" />
+           	<mvc:mapping path="/acc*" />
+           	<mvc:mapping path="/sys*" />
+           	<mvc:mapping path="/env*" />
+           	<mvc:mapping path="/lsc*" />
+           	<mvc:mapping path="/warn*" />
+           	<mvc:mapping path="/menu/*/*" />
+           	<mvc:mapping path="/working/*/*" />         
+           	<mvc:mapping path="/sitemanager/*" />
+           	<bean class="com.myhome.interceptor.LoginCheckInterceptor" />
+		</mvc:interceptor>
+        <bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+			<property name="cacheSeconds" value="0" />
+		    <property name="useExpiresHeader" value="true" />
+		    <property name="useCacheControlHeader" value="true" />
+		    <property name="useCacheControlNoStore" value="true" />
+		</bean>
+    </mvc:interceptors>
+    
+    <!-- Ajax View -->
+    <!-- <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+            <property name="messageConverters">
+                    <list>
+                            <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" />
+                            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+                    </list>
+            </property>
+    </bean>
+    
+    <bean id="eventListenerBean" class="com.secuavail.lsc.was.ApplicationListenerBean" />
+    
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+            <property name="maxUploadSize" value="200000000" />
+    </bean> -->
+</beans>
